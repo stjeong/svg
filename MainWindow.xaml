@@ -11,6 +11,7 @@
             <RowDefinition Height="35" />
             <RowDefinition Height="5" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="35" />
         </Grid.RowDefinitions>
 
         <Grid Margin="10, 0, 10, 0">
@@ -35,7 +36,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <ListView Name="lvSVG" SelectionMode="Multiple">
+            <ListView Name="lvSVG" SelectionMode="Multiple" SelectionChanged="lvSVGSelectionChanged">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Name" Width="Auto"  DisplayMemberBinding="{Binding Name}" />
@@ -44,7 +45,7 @@
                 </ListView.View>
             </ListView>
 
-            <Button Grid.Column="1" Height="30" Margin="10, 0, 10, 0" Padding="15, 0, 15, 0" Click="btnConvertClicked">Convert >></Button>
+            <Button Name="btnConvert" IsEnabled="False" Grid.Column="1" Height="30" Margin="10, 0, 10, 0" Padding="15, 0, 15, 0" Click="btnConvertClicked">Convert >></Button>
 
             <ListView Name="lvConverted" Grid.Column="2">
                 <ListView.View>
@@ -56,6 +57,7 @@
             </ListView>
 
         </Grid>
-            
+
+        <Label Grid.Row="4">SVG Splash &amp; Icons: designed by {dimitry-miroliubov} from Flaticon</Label>
     </Grid>
 </Window>
