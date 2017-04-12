@@ -176,12 +176,26 @@ namespace SvgConverter
             RefreshFolderList(this.txtFolderPath.Text);
         }
 
+        // https://inkscape.org/sk/doc/inkscape-man.html
         void CovnertFile(string filePath)
         {
             string wmfFilePath = Path.ChangeExtension(filePath, ".wmf");
 
+            if (File.Exists(wmfFilePath) == true)
+            {
+                try
+                {
+                    File.Delete(wmfFilePath);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "Delete: " + wmfFilePath);
+                    return;
+                }
+            }
+
             string inkscapePath = Path.Combine(InkscapePath, "inkscape.exe");
-            string arg = string.Format("\"{0}\" --export-wmf=\"{1}\"", filePath, wmfFilePath);
+            string arg = string.Format("-z -f \"{0}\" --export-wmf=\"{1}\"", filePath, wmfFilePath);
             ProcessStartInfo psi = new ProcessStartInfo(inkscapePath, arg);
             psi.WorkingDirectory = InkscapePath;
 
@@ -190,7 +204,10 @@ namespace SvgConverter
                 using (Process process = Process.Start(psi))
                 {
                     process.Start();
-                    process.WaitForExit();
+                    if (process.WaitForExit(1000 * 60) == true)
+                    {
+                        process.Close();
+                    }
                 }
             }
             catch (Exception e)
